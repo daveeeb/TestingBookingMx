@@ -1,5 +1,7 @@
 # Reservation Management Service – Unit Testing with JUnit & Mockito
 
+Challengue 7: Java and JavaScript. Programming Procedures
+
 This project focuses on implementing and validating unit tests for a **Java Spring Boot backend**, specifically targeting core features of a reservation system. The main goal is to ensure that the service responsible for handling reservations behaves correctly, reliably, and consistently.
 
 ## Project Overview
