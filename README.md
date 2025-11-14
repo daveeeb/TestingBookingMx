@@ -4,16 +4,14 @@ Challengue 7: Java and JavaScript. Programming Procedures
 
 This project focuses on implementing and validating unit tests for a **Java Spring Boot backend**, specifically targeting core features of a reservation system. The main goal is to ensure that the service responsible for handling reservations behaves correctly, reliably, and consistently.
 
-## Project Overview
+## Overview
+This project is part of the **TechnoReady – Java & JavaScript Programming Procedures** module. It includes backend and frontend components implemented with **Java, JavaScript, JUnit, Jest, Maven, and JaCoCo**, focusing on testing-driven development.
 
-The system includes the implementation of unit tests for the following reservation operations:
+The project consists of:
 
-- Register a reservation
-- Cancel a reservation
-- Update a reservation
+- **Sprint 1** → Java backend reservation module + JUnit tests  
+- **Sprint 2** → JavaScript graph visualization module + Jest tests  
 
-These operations are tested using **JUnit 5** and **Mockito**.
-The project also includes coverage analysis using **JaCoCo**.
 
 ## Technologies Used
 
@@ -24,12 +22,22 @@ The project also includes coverage analysis using **JaCoCo**.
 - Hibernate Validator
 - Maven
 
-### Testing
+## Testing
 - JUnit 5
 - Mockito
-- AssertJ (if applicable)
 - Spring Boot Test
 - Jacoco (for code coverage reports)
+
+### Frontend
+- Node.js + ECMAScript Modules (ESM)
+- Jest 29
+- Babel-free ESM testing (using `--experimental-vm-modules`)
+- Pure JavaScript functions for testability
+
+## Testing 
+- Jest
+
+
 
 ## Project Structure
 
@@ -58,12 +66,15 @@ TestingBookingMx/
 │   │   │           └── bookingmx/
 │   │   │               └── reservations/
 │   │   │                   └── service/
-│   │   │                       └── ReservationServiceTest.java  ---> File where are the tests.
+│   │   │                       └── ReservationServiceTest.java  ---> File where are the backend tests.
 │   ├── target/
 │   ├── TESTING_NOTES.md
 │
 ├── frontend/
 │   ├── js/
+│   │   ├── graph.js
+│   │   ├── api.js
+│   │   └── test/graph.test.js ---> File where are the forntend tests.
 │   ├── app.js
 │   ├── index.html
 │   ├── jest.config.js
@@ -111,6 +122,10 @@ Report output:
 ```
 
 ## How to Run Tests
+
+```
+cd backend oo frontend
+```
 
 ```
 mvn test
