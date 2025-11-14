@@ -14,18 +14,46 @@ import java.util.List;
 
 @Service
 public class ReservationService {
-    private final ReservationRepository repo = new ReservationRepository();
+    private final ReservationRepository repo;
+
+    public ReservationService(ReservationRepository repo) {
+        this.repo = repo;
+    }
+
+    public ReservationService() {
+        this.repo = null;
+    }
 
     public List<Reservation> list() {
         return repo.findAll();
     }
 
+    //CREATE
     public Reservation create(ReservationRequest req) {
-        validateDates(req.getCheckIn(), req.getCheckOut());
-        Reservation r = new Reservation(null, req.getGuestName(), req.getHotelName(), req.getCheckIn(), req.getCheckOut());
+        if (req.getGuestName() == null || req.getGuestName().isBlank()) {
+            throw new BadRequestException("Guest name is required");
+        }
+        if (req.getHotelName() == null || req.getHotelName().isBlank()) {
+            throw new BadRequestException("Hotel name is required");
+        }
+        if (req.getCheckIn() == null || req.getCheckOut() == null) {
+            throw new BadRequestException("Dates are required");
+        }
+        if (req.getCheckIn().isAfter(req.getCheckOut())) {
+            throw new BadRequestException("Check-in date must be before check-out date");
+        }
+        if (req.getCheckIn().isBefore(LocalDate.now())) {
+            throw new BadRequestException("Check-in date cannot be in the past");
+        }
+
+        Reservation r = new Reservation(null, req.getGuestName(), req.getHotelName(),
+                req.getCheckIn(), req.getCheckOut());
+
         return repo.save(r);
     }
 
+
+    //UPDATE
     public Reservation update(Long id, ReservationRequest req) {
         Reservation existing = repo.findById(id).orElseThrow(() -> new NotFoundException("Reservation not found"));
         if (!existing.isActive()) throw new BadRequestException("Cannot update a canceled reservation");
@@ -37,10 +65,17 @@ public class ReservationService {
         return repo.save(existing);
     }
 
+    //CANCEL
     public Reservation cancel(Long id) {
-        Reservation existing = repo.findById(id).orElseThrow(() -> new NotFoundException("Reservation not found"));
-        existing.setStatus(ReservationStatus.CANCELED);
-        return repo.save(existing);
+        Reservation r = repo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Reservation not found"));
+
+        if (r.getStatus() == ReservationStatus.CANCELED) {
+            throw new BadRequestException("Reservation is already canceled");
+        }
+
+        r.setStatus(ReservationStatus.CANCELED);
+        return repo.save(r);
     }
 
     private void validateDates(LocalDate in, LocalDate out) {
