@@ -1,6 +1,6 @@
 # Reservation Management Service – Unit Testing with JUnit & Mockito
 
-Challengue 7: Java and JavaScript. Programming Procedures
+Challenge 7: Java and JavaScript. Programming Procedures
 
 ## General Project Description
 
