@@ -195,7 +195,7 @@ Add this dependencies in pom.xml
 </plugin>
 
 ```
-## Test Cases Table
+## Test Cases Table - Backend
 | #  | Test Name                                                     | Category    | Description                            | Expected Behavior                   |
 | -- | ------------------------------------------------------------- | ----------- | -------------------------------------- | ----------------------------------- |
 | 1  | `testCreateReservation_Success`                               | Create      | Valid data should create a reservation | Reservation created successfully    |
@@ -224,6 +224,25 @@ Add this dependencies in pom.xml
 | 24 | `testListReservations_EmptyList`                              | List        | Repository returns empty list          | Returns empty list safely           |
 | 25 | `testEmptyConstructor`                                        | Constructor | Coverage-only                          | Object should instantiate           |
 | 26 | *(Mockito initialization inside setUp)*                       | Setup       | Ensures mocks load correctly           | Mocks initialized with no failures  |
+
+
+## Graph.js Test Suite Overview
+| **Category**          | **Test Name**                                    | **What It Validates**                                   | **Expected Behavior**                              |
+| --------------------- | ------------------------------------------------ | ------------------------------------------------------- | -------------------------------------------------- |
+| **Graph Class**       | Adds cities correctly                            | Ensures addCity() registers a new city in adjacency map | City keys exist in `adj` after being added         |
+| Graph Class           | Throws error for invalid city name               | Validates input city names                              | Throws an error when city name is `""` or `null`   |
+| Graph Class           | Adds edges correctly                             | Ensures addEdge() creates bidirectional edges           | Neighbors reflect correct `{to, distance}` objects |
+| Graph Class           | Throws error on edges referencing unknown cities | Edge validation                                         | addEdge() throws when either city doesn't exist    |
+| Graph Class           | Throws error for invalid distances               | Distance validation                                     | Rejects negative or non-numeric distances          |
+| **validateGraphData** | Valid dataset returns ok=true                    | Validates structure and data rules                      | `ok = true` for valid city & edge collections      |
+| validateGraphData     | Fails if cities are duplicated                   | Ensures no duplicate city names                         | Returns `ok = false`                               |
+| validateGraphData     | Fails if edge references unknown city            | Edge integrity                                          | `ok = false`                                       |
+| validateGraphData     | Fails if distance is invalid                     | Distance integrity                                      | `ok = false`                                       |
+| **buildGraph**        | Builds a graph from dataset                      | Functional graph construction                           | Graph size equals number of cities                 |
+| **getNearbyCities**   | Returns nearby cities sorted by distance         | Filtering + sorting behavior                            | Sorted ascending by distance                       |
+| getNearbyCities       | Returns empty list if city does not exist        | Robust input handling                                   | Returns `[]`                                       |
+| getNearbyCities       | Throws if graph is not a Graph instance          | Type validation                                         | Throws exception                                   |
+
 
 
 Javier David Barraza Ureña
