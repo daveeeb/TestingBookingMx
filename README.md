@@ -195,71 +195,35 @@ Add this dependencies in pom.xml
 </plugin>
 
 ```
-## Components Tested - Backend
+## Test Cases Table
+| #  | Test Name                                                     | Category    | Description                            | Expected Behavior                   |
+| -- | ------------------------------------------------------------- | ----------- | -------------------------------------- | ----------------------------------- |
+| 1  | `testCreateReservation_Success`                               | Create      | Valid data should create a reservation | Reservation created successfully    |
+| 2  | `testCreateReservation_InvalidDates_ThrowsException`          | Create      | Checkout < checkin                     | Throws `BadRequestException`        |
+| 3  | `testCreateReservation_PastDate_ThrowsException`              | Create      | Check-in date in past                  | Throws `BadRequestException`        |
+| 4  | `testCreateReservation_Success_Complete`                      | Create      | Valid data + repo interaction          | Reservation saved, fields validated |
+| 5  | `testCreateReservation_NullFields_ThrowsException`            | Create      | Null guest + hotel name                | Throws `BadRequestException`        |
+| 6  | `testCreateReservation_BlankGuestName_ThrowsException`        | Create      | Blank guest name                       | Throws `BadRequestException`        |
+| 7  | `testCreateReservation_BlankHotelName_ThrowsException`        | Create      | Blank hotel name                       | Throws `BadRequestException`        |
+| 8  | `testCreateReservation_NullCheckIn_ThrowsException`           | Create      | Null check-in                          | Throws `BadRequestException`        |
+| 9  | `testCreateReservation_NullCheckOut_ThrowsException`          | Create      | Null check-out                         | Throws `BadRequestException`        |
+| 10 | `testUpdateReservation_Success`                               | Update      | Valid update on existing reservation   | Reservation updated successfully    |
+| 11 | `testUpdateReservation_NotFound`                              | Update      | Updating non-existing ID               | Throws `NotFoundException`          |
+| 12 | `testUpdateCanceledReservation_ThrowsException`               | Update      | Updating canceled reservation          | Throws `BadRequestException`        |
+| 13 | `testUpdateReservation_InvalidDates_ThrowsException`          | Update      | Checkout < checkin                     | Throws `BadRequestException`        |
+| 14 | `testUpdateReservation_NullCheckIn_ThrowsException`           | Update      | Null check-in                          | Throws `BadRequestException`        |
+| 15 | `testUpdateReservation_NullCheckOut_ThrowsException`          | Update      | Null check-out                         | Throws `BadRequestException`        |
+| 16 | `testUpdateReservation_CheckOutBeforeCheckIn_ThrowsException` | Update      | Invalid date order                     | Throws `BadRequestException`        |
+| 17 | `testUpdateReservation_CheckInPast_ThrowsException`           | Update      | Check-in in past                       | Throws `BadRequestException`        |
+| 18 | `testUpdateReservation_CheckOutPast_ThrowsException`          | Update      | Check-out in past                      | Throws `BadRequestException`        |
+| 19 | `testCancelReservation_Success`                               | Cancel      | Valid cancel                           | Sets status to CANCELED             |
+| 20 | `testCancelReservation_NotFound`                              | Cancel      | Cancel nonexistent reservation         | Throws `NotFoundException`          |
+| 21 | `testCancelReservation_AlreadyCanceled_ThrowsException`       | Cancel      | Cancel already canceled                | Throws `BadRequestException`        |
+| 22 | `testCancelReservation_SetsStatusAndSaves`                    | Cancel      | Verify save + status update            | Repo saves updated reservation      |
+| 23 | `testListReservations`                                        | List        | List contains items                    | Returns non-empty list              |
+| 24 | `testListReservations_EmptyList`                              | List        | Repository returns empty list          | Returns empty list safely           |
+| 25 | `testEmptyConstructor`                                        | Constructor | Coverage-only                          | Object should instantiate           |
+| 26 | *(Mockito initialization inside setUp)*                       | Setup       | Ensures mocks load correctly           | Mocks initialized with no failures  |
 
-Backend tests focused on the Reservation module, specifically:
-- ReservationService
-- ReservationRepository (mocked)
-- ReservationRequest and ReservationResponse
 
-## Test Categories Implemented - Backend
-  - Reservation creation tests
-    - Valid reservation should be saved correctly.
-    - Should return a properly formatted success message.
-    - Should validate input fields (dates, city, passenger count).
-
-- Reservation cancellation tests
-    - Cancel an existing reservation successfully.
-    - Return appropriate message.
-    - Throw errors when reservation ID does not exist.
-
-- Reservation update tests
-    - Update city, date, or passenger count.
-    - Validate updated fields.
-    - Reject updates with invalid data.
-
-- Edge case tests
-    - Attempt to create reservations with missing fields.
-    - Invalid dates (past dates, reversed ranges).
-    - Null or empty fields.
-    - Repository failures simulated with Mockito.
-
-## Components Tested - Frontend
-
-The focus was on the graph visualization module, specifically:
-    - Graph class
-    - validateGraphData()
-    - buildGraph()
-    - getNearbyCities()
-    - sampleData
-    
-## Test Categories Implemented
-- Graph class tests
-    - Add valid cities
-    - Reject invalid city names
-    - Add edges correctly
-    - Reject edges referencing unknown cities
-    - Reject invalid distances
-    - Retrieve neighbors correctly
-- Dataset validation tests
-    - Accept valid datasets
-    - Reject:
-    - Duplicate city names
-    - Non-string city entries
-    - Edges pointing to unknown cities
-    - Negative or invalid distances
-- buildGraph() tests
-    - Build a complete graph from a dataset
-    - Ensure that all nodes and edges are correctly loaded
-- getNearbyCities() tests
-    - Returns nearby cities sorted by ascending distance
-    - Filters cities beyond the specified max distance
-    - Returns empty list if city does not exist
-    - Throws error when graph instance is invalid
-- Edge cases
-    - Empty datasets
-    - Cities without edges
-    - Distances equal to the max threshold
-    - Passing invalid graph objects
-      
 Javier David Barraza Ureña
